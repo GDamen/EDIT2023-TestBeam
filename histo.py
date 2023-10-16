@@ -3,8 +3,6 @@ import re
 import pandas as pd
 import matplotlib.pyplot as plt
 
-import analyzewaveformfunction
-
 #df_results = pd.DataFrame(columns = columnnames, dtype='float64')
 general_path = '/home/gdamen/projects/EDIT2023/'
 
