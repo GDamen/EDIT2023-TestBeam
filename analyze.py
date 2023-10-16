@@ -12,13 +12,13 @@ noise_value = 10
 def getMaxAmplitude(amps):
 	return max(-amps) * 1E3
 
-def getFWHM(amps, tims):
+def getFWHM(tims, amps):
 	return 0
 
 def getNoise(amps):
 	return 0
 
-def getSlewRate(amps, tims):
+def getSlewRate(tims, amps):
 	return 0
 
 def getPosition(amps):
