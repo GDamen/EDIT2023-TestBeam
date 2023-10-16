@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import glob
 
-test_name = 'group-0'
 noise_value = 10
 
 # Fill here your functions
@@ -66,7 +65,7 @@ def acquire():
 	
     # Create a DataFrame to store trigger numbers
 
-	input_path = 'pandas_df/' + test_name + '/'
+	input_path = 'dataset/'
 
 	if not os.path.exists(input_path + 'results.csv'):
 		print("results.csv does not exist. Creating...")
