@@ -30,33 +30,33 @@ def AnalyzeWaveformFunction(outputdf, input_file):
 	trigger_number 	= int(((input_file.split('Trigger_')[1]).split('.csv'))[0])
 
 	#do analysis for each channel
-	if int(trigger_number) not in outputdf.index: #Don't redo analysis!
-		print('New file found! ' + input_file)
-		mask_amplitude 	= inputdf.columns.str.contains('Amplitude_Channel*')
-		mask_time 		= inputdf.columns.str.contains('Time_Channel*')
-		df_amplitude 	= inputdf.loc[:, mask_amplitude]
-		df_time			= inputdf.loc[:, mask_time]
-		number_of_channels = len(df_amplitude.columns)
+	#if int(trigger_number) not in outputdf.index: #Don't redo analysis!
+	print('New file found! ' + input_file)
+	mask_amplitude 	= inputdf.columns.str.contains('Amplitude_Channel*')
+	mask_time 		= inputdf.columns.str.contains('Time_Channel*')
+	df_amplitude 	= inputdf.loc[:, mask_amplitude]
+	df_time			= inputdf.loc[:, mask_time]
+	number_of_channels = len(df_amplitude.columns)
 
-		for channel_number in range(1, number_of_channels + 1):
+	for channel_number in range(1, number_of_channels + 1):
+		
+		amps = df_amplitude['Amplitude_Channel' + str(channel_number)]
+		tims = df_time['Time_Channel' + str(channel_number)]
+
+		maxamp 	= getMaxAmplitude(amps)
+		fwhm 	= getFWHM(tims, amps)
+
+		if (maxamp < noise_value):
+			maxamp	= None
+			fwhm	= None
 			
-			amps = df_amplitude['Amplitude_Channel' + str(channel_number)]
-			tims = df_time['Time_Channel' + str(channel_number)]
+		#Now save your results to the ouput dataframe
+		if trigger_number not in outputdf.index:
+			outputdf.loc[trigger_number] = [None]*len(inputdf.transpose())
 
-			maxamp 	= getMaxAmplitude(amps)
-			fwhm 	= getFWHM(tims, amps)
-
-			if (maxamp < noise_value):
-				maxamp	= None
-				fwhm	= None
-				
-			#Now save your results to the ouput dataframe
-			if trigger_number not in outputdf.index:
-				outputdf.loc[trigger_number] = [None]*len(inputdf.transpose())
-
-			#Now find a way to extract "Amp 1, Amp2, Amp3 etc from file name so we know where to save"
-			outputdf['Amp' 	+ str(channel_number) + '[mV]'].loc[trigger_number] = maxamp
-			outputdf['FWHM' + str(channel_number) + '[ns]'].loc[trigger_number] = fwhm
+		#Now find a way to extract "Amp 1, Amp2, Amp3 etc from file name so we know where to save"
+		outputdf['Amp' 	+ str(channel_number) + '[mV]'].loc[trigger_number] = maxamp
+		outputdf['FWHM' + str(channel_number) + '[ns]'].loc[trigger_number] = fwhm
 	return outputdf
 
 def acquire():
