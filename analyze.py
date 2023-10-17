@@ -65,7 +65,7 @@ def acquire():
 	
     # Create a DataFrame to store trigger numbers
 
-	input_path = 'dataset/'
+	input_path = 'dataset/pandas_df/'
 
 	if not os.path.exists(input_path + 'results.csv'):
 		print("results.csv does not exist. Creating...")
